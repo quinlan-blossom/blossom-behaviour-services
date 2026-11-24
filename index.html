@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blossom Behaviour Services — Family-Centred ABA Support in Ontario</title>
+  <meta name="description" content="Blossom Behaviour Services offers practical, strengths-based ABA support for children and families across Ontario. OAP Approved.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://blossombehaviourservices.com/">
+  <meta property="og:title" content="Blossom Behaviour Services — Learning that grows with your child.">
+  <meta property="og:description" content="Family-centred ABA support for meaningful everyday learning across Ontario. OAP Approved.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?q=80&w=1200&auto=format&fit=crop">
+  <meta name="twitter:card" content="summary_large_image">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- React & ReactDOM -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  
+  <!-- Babel -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #F7F8F5;
+      color: #1A2E23;
+    }
+    
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 5rem;
+    }
+    
+    /* Custom Selection */
+    ::selection {
+      background: rgba(140, 163, 138, 0.3);
+    }
+    
+    .blob-shape {
+      border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    }
+  </style>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              canvas: '#F7F8F5',
+              surface: '#FFFFFF',
+              subtle: '#EEF3ED',
+              dark: '#1A3C2B',
+              hover: '#122B1E',
+              accent: '#8CA38A',
+            },
+            text: {
+              primary: '#1A2E23',
+              muted: '#526055',
+              ondark: '#F7F8F5',
+              ondarkmuted: '#C5D1C4',
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" data-type="module">
+    const { useState, useEffect } = React;
+
+    // --- ICONS ---
+    const IconArrowRight = ({ className = "w-5 h-5" }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    );
+    const IconMapPin = ({ className = "w-5 h-5" }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+    );
+    const IconLaptop = ({ className = "w-5 h-5" }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg>
+    );
+    const IconHome = ({ className = "w-5 h-5" }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    );
+    const IconGraduationCap = ({ className = "w-5 h-5" }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+    );
+    const IconShieldCheck = ({ className = "w-5 h-5" }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+    );
+    const IconCheckCircle = ({ className = "w-5 h-5" }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+    );
+    const IconFacebook = ({ className = "w-5 h-5" }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+    );
+    const IconInstagram = ({ className = "w-5 h-5" }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+    );
+        const IconMenu = ({ className = "w-5 h-5" }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+    );
+    const IconX = ({ className = "w-5 h-5" }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    );
+
+    // --- COMPONENTS ---
+
+    const Navbar = () => {
+      const [isOpen, setIsOpen] = useState(false);
+
+      useEffect(() => {
+        if (isOpen) {
+          document.body.style.overflow = 'hidden';
+        } else {
+          document.body.style.overflow = '';
+        }
+        return () => {
+          document.body.style.overflow = '';
+        };
+      }, [isOpen]);
+      
+      return (
+        <header className="fixed top-0 w-full z-50 bg-brand-canvas/98 backdrop-blur-md border-b border-brand-accent/15 transition-all shadow-xs">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+            <a href="index.html#" className="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-brand-dark rounded-lg">
+              <img src="logo-transparent.png" alt="Blossom Behaviour Services" className="h-10 sm:h-12 w-auto object-contain" />
+            </a>
+
+            <nav className="hidden md:flex items-center gap-8">
+              <a href="index.html#about" className="text-sm font-medium text-text-primary hover:text-brand-accent transition-colors">About</a>
+              <a href="index.html#services" className="text-sm font-medium text-text-primary hover:text-brand-accent transition-colors">Services</a>
+              <a href="index.html#focus" className="text-sm font-medium text-text-primary hover:text-brand-accent transition-colors">Focus Areas</a>
+              <a href="index.html#approach" className="text-sm font-medium text-text-primary hover:text-brand-accent transition-colors">Our Approach</a>
+              <a href="index.html#team" className="text-sm font-medium text-text-primary hover:text-brand-accent transition-colors">Our Team</a>
+            </nav>
+
+            <div className="hidden md:flex items-center">
+              <a href="index.html#contact" className="group inline-flex items-center gap-2 bg-brand-dark hover:bg-brand-hover text-brand-canvas text-sm font-semibold px-6 py-3 rounded-full transition-all shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-brand-dark focus:ring-offset-2 focus:ring-offset-brand-canvas">
+                Start a conversation
+                <IconArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </a>
+            </div>
+
+            <button 
+              onClick={() => setIsOpen(!isOpen)} 
+              className="md:hidden p-2 text-text-primary focus:outline-none focus:ring-2 focus:ring-brand-dark rounded-lg" 
+              aria-label={isOpen ? "Close menu" : "Open menu"}
+            >
+              {isOpen ? <IconX className="w-6 h-6" /> : <IconMenu className="w-6 h-6" />}
+            </button>
+          </div>
+
+          {/* Mobile Menu Overlay */}
+          {isOpen && (
+            <div className="md:hidden fixed inset-x-0 top-16 sm:top-20 bottom-0 bg-brand-canvas z-40 flex flex-col justify-between p-6 overflow-y-auto border-t border-brand-accent/20">
+              <div className="flex flex-col gap-5 text-xl font-semibold mt-4">
+                <a href="#about" onClick={() => setIsOpen(false)} className="text-text-primary hover:text-brand-accent transition-colors py-1">About</a>
+                <a href="#services" onClick={() => setIsOpen(false)} className="text-text-primary hover:text-brand-accent transition-colors py-1">Services</a>
+                <a href="#focus" onClick={() => setIsOpen(false)} className="text-text-primary hover:text-brand-accent transition-colors py-1">Focus Areas</a>
+                <a href="#approach" onClick={() => setIsOpen(false)} className="text-text-primary hover:text-brand-accent transition-colors py-1">Our Approach</a>
+                <a href="#team" onClick={() => setIsOpen(false)} className="text-text-primary hover:text-brand-accent transition-colors py-1">Our Team</a>
+              </div>
+              <div className="pt-8 pb-8">
+                <a href="#contact" onClick={() => setIsOpen(false)} className="w-full inline-flex justify-center items-center gap-2 bg-brand-dark hover:bg-brand-hover text-brand-canvas text-base font-semibold px-6 py-4 rounded-full transition-all shadow-md">
+                  Start a conversation
+                  <IconArrowRight className="w-5 h-5" />
+                </a>
+              </div>
+            </div>
+          )}
+        </header>
+      );
+    };
+
+    const Hero = () => {
+      return (
+        <section className="pt-32 pb-16 lg:pt-40 lg:pb-24 max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+            
+            <div className="lg:col-span-7 space-y-8">
+              <div className="inline-flex items-center gap-2 bg-brand-subtle border border-brand-accent/30 px-4 py-2 rounded-full">
+                <span className="w-2 h-2 rounded-full bg-brand-accent animate-pulse" />
+                <span className="text-xs font-bold text-text-muted tracking-widest uppercase">OAP-Approved ABA Services</span>
+              </div>
+
+              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-text-primary tracking-tight leading-[1.05]">
+                Learning that grows <span className="text-brand-dark">with your child.</span>
+              </h1>
+
+              <p className="text-lg lg:text-xl text-text-muted max-w-xl leading-relaxed font-normal">
+                Blossom Behaviour Services offers practical, strengths-based ABA support shaped around your child’s goals and your family’s daily life.
+              </p>
+
+              <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                <a href="index.html#contact" className="group inline-flex justify-center items-center gap-2 bg-brand-dark hover:bg-brand-hover text-brand-canvas font-semibold text-base px-8 py-4 rounded-full transition-all shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-brand-dark focus:ring-offset-2 focus:ring-offset-brand-canvas">
+                  Start a conversation
+                  <IconArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </a>
+              </div>
+            </div>
+
+            <div className="lg:col-span-5 relative">
+              {/* Refined right panel - more elegant, less boxy */}
+              <div className="bg-brand-surface rounded-3xl p-8 sm:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-brand-accent/10 relative z-10">
+                <div className="mb-8">
+                  <span className="text-xs font-bold text-text-muted tracking-widest uppercase block mb-3">
+                    Support where life happens
+                  </span>
+                  <h2 className="text-3xl font-semibold text-text-primary leading-tight">
+                    Connected care,<br/>close to home.
+                  </h2>
+                  <p className="text-sm text-text-muted mt-2 font-medium">
+                    In-person support across Guelph, Kitchener-Waterloo &amp; Halton.
+                  </p>
+                </div>
+
+                <ul className="space-y-5 mb-8">
+                  <li className="flex items-start gap-4">
+                    <div className="p-2.5 bg-brand-subtle rounded-full text-brand-dark shrink-0 mt-0.5">
+                      <IconMapPin className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-text-primary">Community-based support</h4>
+                      <p className="text-sm text-text-muted mt-0.5">Skill building in real-world community settings.</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <div className="p-2.5 bg-brand-subtle rounded-full text-brand-dark shrink-0 mt-0.5">
+                      <IconLaptop className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-text-primary">Virtual care</h4>
+                      <p className="text-sm text-text-muted mt-0.5">Flexible telepractice services across Ontario.</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <div className="p-2.5 bg-brand-subtle rounded-full text-brand-dark shrink-0 mt-0.5">
+                      <IconHome className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-text-primary">In-home care</h4>
+                      <p className="text-sm text-text-muted mt-0.5">Individualized support for daily routines.</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <div className="p-2.5 bg-brand-subtle rounded-full text-brand-dark shrink-0 mt-0.5">
+                      <IconGraduationCap className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-text-primary">School support</h4>
+                      <p className="text-sm text-text-muted mt-0.5">Collaborative support across the school day.</p>
+                    </div>
+                  </li>
+                </ul>
+
+                <div className="bg-brand-dark text-white p-5 rounded-2xl flex items-start gap-4">
+                  <IconShieldCheck className="w-6 h-6 text-brand-accent shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="font-semibold text-brand-canvas mb-1">OAP Approved Provider</h4>
+                    <p className="text-sm text-text-ondarkmuted leading-relaxed">
+                      We walk alongside you through funding, paperwork, and service planning — so you can focus on your child.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Decorative blob behind */}
+              <div className="hidden sm:block absolute -bottom-6 -right-6 w-full h-full bg-brand-subtle rounded-3xl -z-10 blob-shape opacity-60"></div>
+            </div>
+
+          </div>
+        </section>
+      );
+    };
+
+    const Services = () => {
+      const services = [
+        {
+          icon: <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+          label: "Individualized 1:1 ABA Therapy",
+          desc: "Tailored programming built around your child's specific goals, learning style, and what your family actually values. Every session ties back to real life — not just clinical targets.",
+          tag: null,
+        },
+        {
+          icon: <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>,
+          label: "Social Groups",
+          desc: "Small, structured groups focused on building real social connections. We are certified in the PEERS® program — an evidence-based curriculum proven to help adolescents and young adults develop lasting friendships.",
+          tag: "PEERS® Certified",
+        },
+        {
+          icon: <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
+          label: "Caregiver Coaching & Support",
+          desc: "You spend the most time with your child. We equip caregivers with practical, sustainable strategies grounded in ABA so that support doesn't stop when sessions do.",
+          tag: null,
+        },
+      ];
+      return (
+        <section id="services" className="py-24 bg-brand-canvas">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="max-w-2xl space-y-4 mb-16">
+              <span className="text-xs font-bold text-text-muted tracking-widest uppercase">Our Services</span>
+              <h2 className="text-4xl font-semibold text-text-primary">
+                What we offer.
+              </h2>
+              <p className="text-lg text-text-muted">Delivered in-home, in community, at school, or virtually — wherever it makes the most sense for your child.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {services.map(({icon, label, desc, tag}) => (
+                <div key={label} className="group bg-brand-surface p-10 rounded-3xl shadow-sm border border-brand-accent/10 hover:shadow-md transition-all duration-300 relative overflow-hidden flex flex-col">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-brand-subtle rounded-bl-full z-0 opacity-50 group-hover:scale-110 transition-transform duration-500"></div>
+                  <div className="w-14 h-14 bg-brand-subtle group-hover:bg-brand-dark group-hover:text-white rounded-2xl flex items-center justify-center text-brand-dark transition-colors duration-300 mb-8 relative z-10">
+                    {icon}
+                  </div>
+                  <div className="flex items-start gap-3 mb-3 relative z-10">
+                    <h3 className="text-xl font-semibold text-text-primary leading-snug flex-grow">{label}</h3>
+                    {tag && <span className="shrink-0 text-xs font-bold text-brand-dark bg-brand-subtle border border-brand-accent/30 px-2 py-1 rounded-full mt-0.5">{tag}</span>}
+                  </div>
+                  <p className="text-text-muted text-base leading-relaxed relative z-10 flex-grow">{desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    const FocusAreas = () => {
+      const areas = [
+        {
+          icon: (
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+            </svg>
+          ),
+          title: "Academic Skills",
+          desc: "Practical foundations for learning, routines, task persistence, and classroom readiness to help your child feel capable and engaged at school."
+        },
+        {
+          icon: (
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          ),
+          title: "Social Skills",
+          desc: "Building genuine peer connections, perspective-taking, cooperative play, and conversational reciprocity that feel natural, not performative."
+        },
+        {
+          icon: (
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+              <line x1="9" y1="9" x2="9.01" y2="9"/>
+              <line x1="15" y1="9" x2="15.01" y2="9"/>
+            </svg>
+          ),
+          title: "Emotional Regulation",
+          desc: "Recognizing internal states, developing personalized calming tools, and managing sensory thresholds and transitions with growing autonomy."
+        },
+        {
+          icon: (
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          ),
+          title: "Communication",
+          desc: "Expanding functional, expressive, and self-advocacy language — spoken, visual, or augmentative — so your child's voice is always heard."
+        },
+        {
+          icon: (
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+          ),
+          title: "Behaviour Support",
+          desc: "Uncovering the function behind distressing behaviours and collaboratively designing proactive, respectful alternatives."
+        },
+        {
+          icon: (
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect width="18" height="18" x="3" y="3" rx="2"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+          ),
+          title: "Independence & Daily Living",
+          desc: "Mastering self-help routines like dressing, hygiene, mealtime participation, and organization to foster authentic lifelong independence."
+        }
+      ];
+
+      return (
+        <section id="focus" className="py-24 bg-brand-subtle/40 border-y border-brand-accent/10">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto space-y-4 mb-16">
+              <span className="text-xs font-bold text-text-muted tracking-widest uppercase">Clinical Focus Areas</span>
+              <h2 className="text-4xl font-semibold text-text-primary">
+                Meaningful skills for everyday participation.
+              </h2>
+              <p className="text-lg text-text-muted">
+                Every child is different. We focus on the areas that unlock the greatest confidence, joy, and autonomy for your family.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {areas.map((item, idx) => (
+                <div key={idx} className="bg-brand-surface p-8 rounded-3xl border border-brand-accent/15 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                  <div>
+                    <div className="w-12 h-12 rounded-2xl bg-brand-subtle text-brand-dark flex items-center justify-center mb-6 shadow-sm">
+                      {item.icon}
+                    </div>
+                    <h3 className="text-xl font-semibold text-text-primary mb-3">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-text-muted leading-relaxed">
+                      {item.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    const About = () => {
+      return (
+        <section id="about" className="py-24 max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="space-y-6">
+              <span className="text-xs font-bold text-text-muted tracking-widest uppercase">About Us</span>
+              <h2 className="text-4xl lg:text-5xl font-semibold text-text-primary leading-tight">
+                A collaborative team for your child’s next steps.
+              </h2>
+              <div className="space-y-4 text-lg text-text-muted leading-relaxed">
+                <p>
+                  We start by getting to know your child — what motivates them, how they interact with their environment, and what your family actually needs from support.
+                </p>
+                <p>
+                  We don't believe in fitting children into rigid moulds. Our role is to build practical, meaningful skills around who they naturally are — creating an environment where authentic confidence can blossom.
+                </p>
+              </div>
+            </div>
+
+            <div className="relative">
+              <div className="bg-brand-dark text-white p-10 sm:p-12 rounded-3xl shadow-xl space-y-6 relative overflow-hidden">
+                {/* Subtle watermark logo pattern */}
+                <svg className="absolute -right-10 -bottom-10 w-64 h-64 text-brand-accent opacity-10" viewBox="0 0 200 200" fill="currentColor">
+                  <path d="M100 20C40 20 20 80 20 100c0 20 20 80 80 80 60 0 80-60 80-80 0-20-20-80-80-80zm0 140c-44.11 0-60-44.11-60-60 0-15.89 15.89-60 60-60 44.11 0 60 44.11 60 60 0 15.89-15.89 60-60 60z"/>
+                </svg>
+                
+                <IconCheckCircle className="w-12 h-12 text-brand-accent relative z-10" />
+                <div className="relative z-10">
+                  <h3 className="text-3xl font-semibold text-brand-surface mb-4">OAP Approved</h3>
+                  <p className="text-base text-text-ondarkmuted leading-relaxed">
+                    Families can access eligible services through the Ontario Autism Program. We provide direct guidance on navigating funding and service allocation to make the process as seamless as possible for you.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    const MissionValues = () => {
+      // Changed from basic cards to a typographic/list approach
+      return (
+        <section id="approach" className="py-24 bg-brand-subtle/50">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+              
+              <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-32 lg:h-fit">
+                <span className="text-xs font-bold text-text-muted tracking-widest uppercase">Mission & Values</span>
+                <h2 className="text-4xl lg:text-5xl font-semibold text-text-primary leading-tight">
+                  Meaningful progress for every child and family.
+                </h2>
+                <p className="text-lg text-text-muted leading-relaxed">
+                  We believe support works best when it feels like a true partnership — honest conversations, realistic goals, and strategies built for your child, not a checklist.
+                </p>
+              </div>
+              
+              <div className="lg:col-span-7 space-y-12">
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 group">
+                  <div className="text-3xl sm:text-4xl font-bold text-brand-accent/40 group-hover:text-brand-accent transition-colors">01</div>
+                  <div>
+                    <h3 className="text-2xl font-semibold text-text-primary mb-3">Family partnership</h3>
+                    <p className="text-text-muted text-lg leading-relaxed">
+                      Families know their children best. We work as true partners at every stage — setting realistic goals together and ensuring strategies fit smoothly into your actual home life.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="w-full h-px bg-brand-accent/20"></div>
+
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 group">
+                  <div className="text-3xl sm:text-4xl font-bold text-brand-accent/40 group-hover:text-brand-accent transition-colors">02</div>
+                  <div>
+                    <h3 className="text-2xl font-semibold text-text-primary mb-3">Strengths before challenges</h3>
+                    <p className="text-text-muted text-lg leading-relaxed">
+                      We build from what already brings your child joy, confidence, and engagement. Progress happens faster and with greater dignity when it is grounded in what a child loves.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="w-full h-px bg-brand-accent/20"></div>
+
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 group">
+                  <div className="text-3xl sm:text-4xl font-bold text-brand-accent/40 group-hover:text-brand-accent transition-colors">03</div>
+                  <div>
+                    <h3 className="text-2xl font-semibold text-text-primary mb-3">Meaningful generalization</h3>
+                    <p className="text-text-muted text-lg leading-relaxed">
+                      A target mastered in a quiet room isn't enough. We plan from day one for skills to show up across people, noisy playgrounds, school corridors, and family dinner tables.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="w-full h-px bg-brand-accent/20"></div>
+
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 group">
+                  <div className="text-3xl sm:text-4xl font-bold text-brand-accent/40 group-hover:text-brand-accent transition-colors">04</div>
+                  <div>
+                    <h3 className="text-2xl font-semibold text-text-primary mb-3">Ethical, evidence-informed care</h3>
+                    <p className="text-text-muted text-lg leading-relaxed">
+                      Our recommendations are transparent, compassionate, and held to the highest ethical standards. We continuously reflect on our practice to ensure care is genuinely supportive.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    const Team = () => (
+      <section id="team" className="py-24 max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+          <div className="lg:col-span-5 relative order-2 lg:order-1 lg:sticky lg:top-28">
+            <div className="aspect-[4/5] rounded-3xl overflow-hidden shadow-xl relative z-10 border border-brand-accent/15">
+              <img src="quinlan.jpg" alt="Quinlan Stamp, M.A., BCBA, R.B.A. (Ont.) — Owner & Registered Behaviour Analyst" className="w-full h-full object-cover object-top" />
+            </div>
+            <div className="hidden sm:block absolute -bottom-6 -left-6 w-full h-full bg-brand-subtle rounded-3xl -z-10"></div>
+          </div>
+          <div className="lg:col-span-7 space-y-6 order-1 lg:order-2">
+            <span className="text-xs font-bold text-text-muted tracking-widest uppercase">Clinical Leadership</span>
+            <h2 className="text-4xl lg:text-5xl font-semibold text-text-primary leading-tight">
+              Expert care, grounded in compassion.
+            </h2>
+            <div className="space-y-1">
+              <h3 className="text-2xl font-bold text-brand-dark">Quinlan Stamp</h3>
+              <p className="text-sm font-semibold text-brand-accent tracking-wide">M.A., BCBA, R.B.A. (Ont.)</p>
+              <p className="text-sm text-text-muted font-medium">Owner &amp; Registered Behaviour Analyst</p>
+            </div>
+
+            <div className="space-y-4 text-base text-text-muted leading-relaxed">
+              <p>
+                My path into this field began at summer camp, where I first experienced the joy of helping children discover their strengths and build confidence. That experience led me to complete my B.H.Sc. in Child Health at McMaster University and an M.A. in Applied Disability Studies (ABA) at Brock University. During my graduate studies, I actively contributed to research projects focused on the Picture Exchange Communication System (PECS®) and caregiver coaching, fostering a deep dedication to both clinical excellence and ongoing research.
+              </p>
+              <p>
+                Over the past six years, I have supported children, youth, and adults across clinic, home, school, and community settings, witnessing firsthand the lifelong impact of compassionate, high-quality care.
+              </p>
+            </div>
+
+            <div className="bg-brand-surface p-6 sm:p-7 rounded-2xl border border-brand-accent/20 shadow-sm space-y-4">
+              <h4 className="text-xs font-bold text-text-muted tracking-widest uppercase">
+                Qualifications &amp; Certifications
+              </h4>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-text-primary font-medium">
+                <li className="flex items-center gap-2.5">
+                  <div className="w-2 h-2 rounded-full bg-brand-accent shrink-0"></div>
+                  <span>Registered Behaviour Analyst (RBA)</span>
+                </li>
+                <li className="flex items-center gap-2.5">
+                  <div className="w-2 h-2 rounded-full bg-brand-accent shrink-0"></div>
+                  <span>Board Certified Behavior Analyst (BCBA)</span>
+                </li>
+                <li className="flex items-center gap-2.5">
+                  <div className="w-2 h-2 rounded-full bg-brand-accent shrink-0"></div>
+                  <span>OAP Clinical Supervisor</span>
+                </li>
+                <li className="flex items-center gap-2.5">
+                  <div className="w-2 h-2 rounded-full bg-brand-accent shrink-0"></div>
+                  <span>PECS® Level 1 Trainer</span>
+                </li>
+                <li className="flex items-center gap-2.5 sm:col-span-2">
+                  <div className="w-2 h-2 rounded-full bg-brand-accent shrink-0"></div>
+                  <span>PEERS® Certified Social Skills Provider</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="text-base text-text-muted leading-relaxed border-l-2 border-brand-accent/40 pl-5 italic">
+              <p>
+                "I founded Blossom Behaviour Services on the belief that meaningful progress happens when therapy is family-centred, collaborative, and deeply personalized. Navigating support services can feel overwhelming, but you don't have to do it alone—I invite you to reach out whenever you're ready to explore how we can support your family's journey."
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    const StarRow = () => (
+      <div className="flex gap-1 text-brand-accent">
+        {[0,1,2,3,4].map(i => (
+          <svg key={i} xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        ))}
+      </div>
+    );
+
+    const Testimonials = () => {
+      const quotes = [
+        {
+          q: "The transition to school was our biggest worry. The team coached us and collaborated with his teachers, and the difference in his confidence has been incredible.",
+          who: "Parent of a 5-year-old",
+          category: "Family Perspective"
+        },
+        {
+          q: "Quinlan's clinical supervision was transformative for my professional growth. Her approach balances deep ethical accountability with practical, compassionate mentorship that always puts the learner first.",
+          who: "Supervised Instructor Therapist",
+          category: "Colleague Endorsement"
+        },
+        {
+          q: "They genuinely listen. They never tried to fit our daughter into a rigid box. Every goal feels meaningful and tailored to our actual family routine.",
+          who: "Parent of an 8-year-old",
+          category: "Family Perspective"
+        },
+      ];
+      return (
+        <section className="py-24 bg-brand-subtle/30 border-y border-brand-accent/10">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto space-y-4 mb-16">
+              <span className="text-xs font-bold text-text-muted tracking-widest uppercase">Perspectives &amp; Endorsements</span>
+              <h2 className="text-4xl font-semibold text-text-primary">
+                Trusted by families and colleagues alike.
+              </h2>
+              <p className="text-base text-text-muted">
+                Reflections from caregivers we partner with and clinicians we supervise and support.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {quotes.map(({q, who, category}, i) => (
+                <div key={i} className="bg-brand-surface p-8 rounded-3xl shadow-sm border border-brand-accent/10 space-y-6 hover:shadow-md transition-shadow flex flex-col justify-between">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <StarRow />
+                      <span className="text-xs font-semibold text-text-muted bg-brand-subtle px-2.5 py-1 rounded-full">{category}</span>
+                    </div>
+                    <p className="text-text-primary text-base italic leading-relaxed">
+                      "{q}"
+                    </p>
+                  </div>
+                  <p className="text-xs font-bold text-text-muted uppercase tracking-wider pt-4 border-t border-brand-accent/10">
+                    — {who}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    const FAQ = () => {
+      const [openIdx, setOpenIdx] = useState(0);
+      const faqs = [
+        { q: "Are your services eligible for OAP funding?", a: "Yes, we are an OAP-approved provider. Families can use their Ontario Autism Program direct funding to access our ABA services. We also provide guidance to help you navigate the allocation and billing process." },
+        { q: "Do you only provide services in-person?", a: "We offer a flexible hybrid model: in-home and community-based services in our local region, as well as high-quality virtual services and care across the province of Ontario (with in-person support across Guelph, KW, and Halton)." },
+        { q: "Do I need a formal diagnosis to start?", a: "While a formal diagnosis is required for OAP funding, we can provide private pay services without a formal diagnosis." },
+        { q: "What age groups do you work with?", a: "We work with children and youth across a range of ages. Every plan is individualized — please reach out and we can discuss whether our services are a good fit for your child." },
+        { q: "How long is the current waitlist?", a: "Wait times vary depending on whether you are seeking in-home support or virtual coaching. Please contact us directly for the most up-to-date timeline for your needs and region." },
+        { q: "How do I get started?", a: "Fill out our contact form below or email us at info@blossombehaviourservices.com. A member of our clinical team will follow up within 2 business days." },
+      ];
+      return (
+        <section className="py-16 max-w-4xl mx-auto px-6 lg:px-8">
+          <div className="text-center space-y-4 mb-12">
+            <span className="text-xs font-bold text-text-muted tracking-widest uppercase">FAQ</span>
+            <h2 className="text-4xl font-semibold text-text-primary">Common questions</h2>
+          </div>
+          <div className="space-y-3">
+            {faqs.map(({q, a}, i) => (
+              <div key={i} className="border border-brand-accent/20 rounded-2xl overflow-hidden bg-brand-surface shadow-sm">
+                <button onClick={() => setOpenIdx(openIdx === i ? null : i)} className="w-full px-8 py-6 text-left flex justify-between items-center focus:outline-none hover:bg-brand-subtle/50 transition-colors">
+                  <span className="font-semibold text-lg text-text-primary pr-6">{q}</span>
+                  <span className="text-brand-dark shrink-0">
+                    {openIdx === i
+                      ? <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                      : <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    }
+                  </span>
+                </button>
+                {openIdx === i && <div className="px-8 pb-6 text-text-muted leading-relaxed border-t border-brand-accent/10 pt-4">{a}</div>}
+              </div>
+            ))}
+          </div>
+        </section>
+      );
+    };
+
+    const CTASection = () => {
+      const [status, setStatus] = useState('idle'); // 'idle' | 'submitting' | 'success' | 'error'
+
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        setStatus('submitting');
+
+        const form = e.target;
+        const formData = new FormData(form);
+
+        try {
+          // If a service endpoint is configured (Formspree, Web3Forms, etc.)
+          const actionUrl = form.getAttribute('action') || 'https://api.web3forms.com/submit';
+          
+          const response = await fetch(actionUrl, {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'Accept': 'application/json'
+            }
+          });
+
+          const result = await response.json();
+          if (result.success || response.ok) {
+            setStatus('success');
+            form.reset();
+          } else {
+            setStatus('error');
+          }
+        } catch (error) {
+          // If network error or endpoint not yet configured
+          setStatus('error');
+        }
+      };
+
+      return (
+        <section id="contact" className="py-24 max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="relative bg-brand-dark text-white rounded-[2.5rem] p-8 md:p-12 lg:p-16 flex flex-col lg:flex-row gap-16 shadow-xl overflow-hidden">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-brand-hover rounded-full mix-blend-multiply filter blur-3xl opacity-50 translate-x-1/3 -translate-y-1/3 pointer-events-none"></div>
+            <div className="absolute bottom-0 left-0 w-72 h-72 bg-brand-accent/20 rounded-full mix-blend-multiply filter blur-3xl opacity-30 -translate-x-1/3 translate-y-1/3 pointer-events-none"></div>
+
+            <div className="lg:w-5/12 space-y-6 relative z-10">
+              <span className="text-brand-accent font-semibold tracking-widest uppercase text-sm">Start a conversation</span>
+              <h2 className="text-4xl lg:text-5xl font-bold tracking-tight text-brand-surface leading-tight">
+                Ready when your family is.
+              </h2>
+              <p className="text-lg text-text-ondarkmuted leading-relaxed">
+                Whether you're actively seeking services or just exploring your options, we're here to answer your questions without pressure.
+              </p>
+              <p className="text-lg text-text-ondarkmuted leading-relaxed">
+                Fill out the form, or reach out directly at{' '}
+                <a href="mailto:info@blossombehaviourservices.com" className="text-brand-surface underline underline-offset-4 hover:text-brand-accent transition-colors">
+                  info@blossombehaviourservices.com
+                </a>
+              </p>
+              <p className="text-sm text-text-ondarkmuted/70">
+                A member of our clinical team will be in touch within 2 business days.
+              </p>
+            </div>
+
+            <div className="lg:w-7/12 relative z-10">
+              {status === 'success' ? (
+                <div className="bg-brand-surface p-10 rounded-3xl text-text-primary shadow-lg text-center space-y-4">
+                  <div className="w-16 h-16 bg-brand-subtle text-brand-dark rounded-full flex items-center justify-center mx-auto">
+                    <IconCheckCircle className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-text-primary">Thank you for reaching out!</h3>
+                  <p className="text-base text-text-muted max-w-md mx-auto leading-relaxed">
+                    We've received your inquiry. Quinlan or a member of our clinical team will review your message and follow up within 2 business days.
+                  </p>
+                  <button 
+                    onClick={() => setStatus('idle')}
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-brand-dark hover:underline pt-2"
+                  >
+                    ← Send another message
+                  </button>
+                </div>
+              ) : (
+                <form 
+                  action="https://api.web3forms.com/submit" 
+                  method="POST"
+                  onSubmit={handleSubmit}
+                  className="bg-brand-surface p-8 rounded-3xl space-y-5 text-text-primary shadow-lg"
+                >
+                  <input type="hidden" name="access_key" value="f9ea8fd4-b861-45a1-b642-2cf39dffae08" />
+                  <input type="hidden" name="subject" value="New Client Inquiry — Blossom Behaviour Services" />
+                  <input type="hidden" name="from_name" value="Blossom Website Form" />
+
+                  {status === 'error' && (
+                    <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-sm text-red-700">
+                      There was an issue sending your message. Please email us directly at{' '}
+                      <a href="mailto:info@blossombehaviourservices.com" className="font-semibold underline">
+                        info@blossombehaviourservices.com
+                      </a>.
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div className="space-y-1.5">
+                      <label className="text-sm font-semibold text-text-primary">Your name *</label>
+                      <input 
+                        type="text" 
+                        name="name" 
+                        required 
+                        className="w-full bg-brand-canvas border border-brand-accent/30 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-dark transition-all text-text-primary placeholder:text-text-muted/60" 
+                        placeholder="Jane Smith" 
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-sm font-semibold text-text-primary">Email address *</label>
+                      <input 
+                        type="email" 
+                        name="email" 
+                        required 
+                        className="w-full bg-brand-canvas border border-brand-accent/30 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-dark transition-all text-text-primary placeholder:text-text-muted/60" 
+                        placeholder="jane@example.com" 
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div className="space-y-1.5">
+                      <label className="text-sm font-semibold text-text-primary">Child's age</label>
+                      <input 
+                        type="text" 
+                        name="child_age" 
+                        className="w-full bg-brand-canvas border border-brand-accent/30 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-dark transition-all text-text-primary placeholder:text-text-muted/60" 
+                        placeholder="e.g. 5 years old" 
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-sm font-semibold text-text-primary">City / Region</label>
+                      <input 
+                        type="text" 
+                        name="city_region" 
+                        className="w-full bg-brand-canvas border border-brand-accent/30 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-dark transition-all text-text-primary placeholder:text-text-muted/60" 
+                        placeholder="e.g. Guelph, Kitchener, Oakville" 
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-semibold text-text-primary">How can we help? *</label>
+                    <textarea 
+                      rows="4" 
+                      name="message" 
+                      required 
+                      className="w-full bg-brand-canvas border border-brand-accent/30 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-dark transition-all resize-none text-text-primary placeholder:text-text-muted/60" 
+                      placeholder="Briefly tell us what kind of support you're looking for..."
+                    ></textarea>
+                  </div>
+
+                  <button 
+                    type="submit" 
+                    disabled={status === 'submitting'}
+                    className="w-full inline-flex justify-center items-center gap-3 bg-brand-dark hover:bg-brand-hover text-brand-surface font-semibold px-8 py-4 rounded-xl transition-all hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-brand-dark/30 text-base disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    {status === 'submitting' ? (
+                      <>
+                        <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                        Sending inquiry...
+                      </>
+                    ) : (
+                      <>
+                        Send Message
+                        <IconArrowRight className="w-5 h-5" />
+                      </>
+                    )}
+                  </button>
+                </form>
+              )}
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    const Footer = () => {
+      return (
+        <footer className="bg-brand-dark text-text-ondarkmuted pt-20 pb-12">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pb-16 border-b border-brand-accent/20">
+              
+              <div className="md:col-span-5 space-y-6">
+                <img src="logo-white.png" alt="Blossom Behaviour Services" className="h-14 w-auto object-contain opacity-90" />
+                <p className="text-base text-text-ondarkmuted max-w-sm leading-relaxed">
+                  Family-centred ABA support for meaningful everyday learning.
+                </p>
+                <div className="flex gap-3 pt-1">
+                <a href="https://www.facebook.com/people/Blossom-Behaviour-Services/61594402555074/" target="_blank" rel="noopener noreferrer" aria-label="Blossom on Facebook" className="text-text-ondarkmuted/70 hover:text-brand-surface transition-colors">
+                  <IconFacebook className="w-5 h-5" />
+                </a>
+                <a href="https://www.instagram.com/blossombehaviourservices/" target="_blank" rel="noopener noreferrer" aria-label="Blossom on Instagram" className="text-text-ondarkmuted/70 hover:text-brand-surface transition-colors">
+                  <IconInstagram className="w-5 h-5" />
+                </a>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-brand-accent">
+                  <IconMapPin className="w-4 h-4" />
+                  <span>Serving communities across Ontario</span>
+                </div>
+              </div>
+
+              <div className="md:col-span-3 space-y-4">
+                <h4 className="text-xs font-bold text-brand-surface tracking-widest uppercase">Navigation</h4>
+                <ul className="space-y-3">
+                  <li><a href="index.html#about" className="hover:text-brand-surface transition-colors">About Us</a></li>
+                <li><a href="index.html#team" className="hover:text-brand-surface transition-colors">Our Team</a></li>
+                  <li><a href="index.html#services" className="hover:text-brand-surface transition-colors">Services</a></li>
+                  <li><a href="index.html#approach" className="hover:text-brand-surface transition-colors">Our Approach</a></li>
+                  <li><a href="index.html#contact" className="hover:text-brand-surface transition-colors">Contact</a></li>
+                </ul>
+              </div>
+
+              <div className="md:col-span-4 space-y-4">
+                <h4 className="text-xs font-bold text-brand-surface tracking-widest uppercase">Program Information</h4>
+                <ul className="space-y-3">
+                  <li className="flex items-start gap-2">
+                    <IconShieldCheck className="w-5 h-5 text-brand-accent shrink-0" />
+                    <span>OAP Approved Services</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <svg className="w-5 h-5 text-brand-accent shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <span>Direct Billing Info Available</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <IconHome className="w-5 h-5 text-brand-accent shrink-0" />
+                    <span>Regional In-Home & Virtual Care</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-sm text-text-ondarkmuted/70 gap-4">
+              <p>© {new Date().getFullYear()} Blossom Behaviour Services. All rights reserved.</p>
+              <div className="flex gap-8">
+                <a href="privacy.html" className="hover:text-brand-surface transition-colors">Privacy Policy</a>
+                <a href="index.html#" className="hover:text-brand-surface transition-colors">Terms of Service</a>
+              </div>
+            </div>
+          </div>
+        </footer>
+      );
+    };
+
+    const App = () => {
+      return (
+        <div className="flex flex-col min-h-screen">
+          <Navbar />
+          <main className="flex-grow">
+            <Hero />
+            <Services />
+            <FocusAreas />
+            <About />
+            <MissionValues />
+            <Team />
+                        <FAQ />
+            <CTASection />
+          </main>
+          <Footer />
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
